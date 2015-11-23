@@ -39,5 +39,5 @@ task install: :build do
 end
 
 # Deps and defaults
-task spec: [:install, :compile, :vendor]
+task spec: [:build, :compile, :vendor]
 task default: :spec
