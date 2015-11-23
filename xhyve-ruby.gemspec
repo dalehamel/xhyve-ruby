@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.homepage    =   
     'http://rubygems.org/gems/ruby-xhyve'
   s.license       = 'MIT'
+  s.add_development_dependency 'rspec', ['=3.2.0']
   s.add_development_dependency 'rake', ['=10.4.2']
   s.add_development_dependency 'rake-compiler', ['=0.9.5']
   s.extensions = %w[ext/vmnet/extconf.rb]
