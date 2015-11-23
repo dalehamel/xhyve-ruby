@@ -2,4 +2,5 @@ tmp
 mkmf.log
 Makefile
 lib/xhyve/vmnet/vmnet.bundle
+lib/xhyve/vendor/xhyve
 *.gem
