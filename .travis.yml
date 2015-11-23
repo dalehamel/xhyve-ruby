@@ -2,5 +2,4 @@ os: osx
 osx_image: xcode7.1
 rvm: 
   - 2.1.5
-install: ./build.sh
-script: gem build xhyve-ruby.gemspec
+script: bundle exec rake
