@@ -1,0 +1,5 @@
+tmp
+mkmf.log
+Makefile
+lib/xhyve/vmnet/vmnet.bundle
+*.gem
