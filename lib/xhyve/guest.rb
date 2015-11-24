@@ -31,7 +31,7 @@ module Xhyve
     end
 
     def stop
-      Process.kill('TERM', @pid)
+      Process.kill('KILL', @pid)
     end
 
     def running?
