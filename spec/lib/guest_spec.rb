@@ -16,7 +16,31 @@ RSpec.describe Xhyve::Guest do
 
   it 'Can get the MAC of a guest' do
     with_guest(guest) do
-      expect(guest.mac).to_not be_nil
+      expect(guest.mac).to_not be_nil # probably need to loop inside MAC function for a bit
+    end
+  end
+
+  it 'Can get the IP of a guest' do
+    with_guest(guest) do
+      expect(guest.ip).to_not be_nil # probably need to loop inside IP function to ensure has ip
+    end
+  end
+
+  it 'Can ssh to the guest' do
+    with_guest(guest) do
+      #expect(guest.ip).to_not be_nil
+    end
+  end
+
+  it 'Correctly sets memory' do
+    with_guest(guest) do
+      #expect(guest.ip).to_not be_nil
+    end
+  end
+
+  it 'Correctly sets processors' do
+    with_guest(guest) do
+      #expect(guest.ip).to_not be_nil
     end
   end
 

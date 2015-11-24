@@ -17,7 +17,7 @@ module Xhyve
       @initrd = opts.fetch(:initrd)
       @cmdline = opts.fetch(:cmdline)
       @blockdevs = [ opts[:blockdevs] || [] ].flatten
-      @memory = opts[:memory] || 1
+      @memory = opts[:memory] || '500M'
       @processors = opts[:processors] || 1
       @uuid = opts[:uuid] || SecureRandom.uuid
       @serial = opts[:serial] || 'com1'
@@ -59,7 +59,7 @@ module Xhyve
        "#{BINARY_PATH}",
        "#{"-A" if @acpi}",
        "-U #{@uuid}", 
-       "-m #{@memory}G",
+       "-m #{@memory}",
        "-c #{@processors}", 
        "#{PCI_STR}",
        '-s 31,lpc',
