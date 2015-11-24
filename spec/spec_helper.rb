@@ -4,6 +4,7 @@ SimpleCov.start
 require 'securerandom'
 require 'sshkit'
 require 'sshkit/dsl'
+require 'net/ping'
 require File.expand_path('../../lib/xhyve.rb', __FILE__)
 
 FIXTURE_PATH = File.expand_path('../../spec/fixtures', __FILE__)
@@ -17,6 +18,20 @@ TEST_UUID = SecureRandom.uuid
 #    ]
 #  end
 #end
+
+def ping(ip)
+  Net::Ping::ICMP.new(ip).ping
+end
+
+def with_guest(guest)
+  guest.start
+  yield
+rescue
+  guest.stop
+ensure
+  guest.stop
+  guest.destroy
+end
 
 def on_guest(ip, command)
   host = SSHKit::Host.new("console@#{ip}")

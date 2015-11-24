@@ -4,46 +4,69 @@ require 'xhyve/dhcp'
 
 module Xhyve
   BINARY_PATH=File.expand_path('../../../lib/xhyve/vendor/xhyve', __FILE__).freeze
-  NETWORK_STR = '-s 2:0,virtio-net'
-  PCI_STR = '-s 0:0,hostbridge -s 31,lpc'
 
   class Guest
+    PCI_STR = '-s 0:0,hostbridge'
+    PCI_BASE = 3
+    NETWORK_STR = "-s #{PCI_BASE-1}:0,virtio-net"
+
+    attr_reader :pid, :uuid
 
     def initialize(**opts)
       @kernel = opts.fetch(:kernel)
       @initrd = opts.fetch(:initrd)
       @cmdline = opts.fetch(:cmdline)
+      @blockdevs = [ opts[:blockdevs] || [] ].flatten
       @memory = opts[:memory] || 1
       @processors = opts[:processors] || 1
       @uuid = opts[:uuid] || SecureRandom.uuid
       @serial = opts[:serial] || 'com1'
       @acpi = opts[:acpi] || true
+      @sudo = opts[:sudo] || true
       @command = build_command
     end
 
     def start
-      spawn(command)
+      @pid = spawn(@command)
     end
 
-    def get_ip
-      Xhyve
+    def stop
+      Process.kill('TERM', @pid) if running?
     end
 
-    def get_mac
-      VMNet.uuid_to_mac(@uuid)
+    def destroy
+      Process.kill('KILL', @pid) if running?
+    end
+
+    def running?
+      Process.kill(0, @pid)
+    rescue Errno::ESRCH
+      false
+    end
+    
+    def ip
+      @ip ||= Xhyve::DHCP.get_ip_for_mac(get_mac)
+    end
+
+    def mac
+      @mac ||= VMNet.uuid_to_mac(@uuid)
     end
 
   private
     def build_command
-      ["#{BINARY_PATH}",
-       "-U #{@uuid}", 
-       "-m #{@memory}",
-       "-c #{@processors}", 
-       "#{NETWORK_STR}",
-       "#{PCI_STR}",
-       "-l #{@serial},stdio",
+      [
+       "#{"sudo" if @sudo}",
+       "#{BINARY_PATH}",
        "#{"-A" if @acpi}",
-       "-f kexec,#{@kernel},#{@initrd},\"#{@cmdline}\""
+       "-U #{@uuid}", 
+       "-m #{@memory}G",
+       "-c #{@processors}", 
+       "#{PCI_STR}",
+       '-s 31,lpc',
+       "-l #{@serial},stdio",
+       "#{NETWORK_STR}",
+       "#{"#{@blockdevs.each_with_index.map{ |p,i| "-s #{PCI_BASE+i},virtio-blk,#{p}" }.join(' ')}" unless @blockdevs.empty? }",
+       "-f kexec,#{@kernel},#{@initrd},'#{@cmdline}'"
       ].join(' ')
     end
   end

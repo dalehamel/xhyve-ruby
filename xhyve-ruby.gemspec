@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', ['=0.10.0']
   s.add_development_dependency 'rspec', ['=3.2.0']
   s.add_development_dependency 'sshkit', ['=1.7.1']
+  s.add_development_dependency 'net-ping', ['=1.7.8']
   s.add_development_dependency 'rake', ['=10.4.2']
   s.add_development_dependency 'rake-compiler', ['=0.9.5']
   s.extensions = %w[ext/vmnet/extconf.rb]
