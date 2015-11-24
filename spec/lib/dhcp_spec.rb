@@ -1,5 +1,7 @@
 require File.expand_path('../../spec_helper.rb', __FILE__)
 
+return if ENV['TRAVIS']
+
 RSpec.describe Xhyve::DHCP do
   let(:leasefile){ File.join(FIXTURE_PATH, 'dhcpd_leases.txt') }
   let(:leases){ { 
