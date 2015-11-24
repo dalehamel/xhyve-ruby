@@ -64,6 +64,4 @@ module Xhyve
       ].compact
     end
   end
-
-  # ./build/xhyve -U $UUID -m ${MEM}G -c ${PROCS} -s 2:0,virtio-net -s 0:0,hostbridge -s 31,lpc -l com2,stdio -A -f kexec,/Volumes/CDROM\ 1/BOOT/VMLINUZ,/Volumes/CDROM\ 1/BOOT/INITRD,"boot=live root=/dev/ram0 live-media=initramfs earlyprintk=serial console=ttyS1,115200 net.ifnames=0 biosdevname=0"
 end
