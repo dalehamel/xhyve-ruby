@@ -2,13 +2,11 @@ require 'simplecov'
 SimpleCov.start
 
 require 'securerandom'
-require 'sshkit'
-require 'sshkit/dsl'
+require 'net/ssh'
 require 'net/ping'
 require File.expand_path('../../lib/xhyve.rb', __FILE__)
 
 FIXTURE_PATH = File.expand_path('../../spec/fixtures', __FILE__)
-TEST_UUID = SecureRandom.uuid
 
 #  def self.append_features(mod)
 #    mod.class_eval %[
@@ -20,28 +18,30 @@ TEST_UUID = SecureRandom.uuid
 #end
 
 def ping(ip)
-  Net::Ping::ICMP.new(ip).ping
-end
+  attempts = 0
+  max_attempts = 60
+  sleep_time = 1
 
-def with_guest(guest)
-  guest.start
-  yield
-rescue
-  guest.stop
-ensure
-  guest.stop
-  guest.destroy
-end
-
-def on_guest(ip, command)
-  host = SSHKit::Host.new("console@#{ip}")
-  host.password = 'tcuser'
-  on host do |host|
-    capture(command)
+  while attempts < max_attempts
+    attempts = attempts +1
+    sleep(sleep_time)
+    begin
+      return true if Net::Ping::ICMP.new(ip).ping
+    rescue
+    end
   end
 end
 
+def on_guest(ip, command)
+  output = ''
+  Net::SSH.start(ip, 'console', password: 'tcuser' ) do |ssh|
+    output = ssh.exec!(command)
+  end
+  output.strip
+end
+
 RSpec.configure do |config|
+  config.order = :defined
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end

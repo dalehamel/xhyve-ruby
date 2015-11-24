@@ -2,17 +2,18 @@ PATH
   remote: .
   specs:
     xhyve-ruby (0.0.2)
+      childprocess (= 0.5.8)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    colorize (0.7.7)
+    childprocess (0.5.8)
+      ffi (~> 1.0, >= 1.0.11)
     diff-lcs (1.2.5)
     docile (1.1.5)
+    ffi (1.9.10)
     json (1.8.3)
     net-ping (1.7.8)
-    net-scp (1.2.1)
-      net-ssh (>= 2.6.5)
     net-ssh (3.0.1)
     rake (10.4.2)
     rake-compiler (0.9.5)
@@ -35,19 +36,15 @@ GEM
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
-    sshkit (1.7.1)
-      colorize (>= 0.7.0)
-      net-scp (>= 1.1.2)
-      net-ssh (>= 2.8.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   net-ping (= 1.7.8)
+  net-ssh (= 3.0.1)
   rake (= 10.4.2)
   rake-compiler (= 0.9.5)
   rspec (= 3.2.0)
   simplecov (= 0.10.0)
-  sshkit (= 1.7.1)
   xhyve-ruby!
