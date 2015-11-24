@@ -2,7 +2,7 @@ require 'rake/extensiontask'
 require 'rspec/core/rake_task'
 require 'fileutils'
 
-XHYVE_TMP='tmp/xhyve'
+XHYVE_TMP = 'tmp/xhyve'
 
 # Compile native extensions task
 Rake::ExtensionTask.new 'vmnet' do |ext|
@@ -15,7 +15,7 @@ RSpec::Core::RakeTask.new(:spec)
 desc 'Build xhyve binary'
 task :vendor do
   Dir.chdir('tmp') do
-    unless Dir.exists?('xhyve/.git')
+    unless Dir.exist?('xhyve/.git')
       system('git clone https://github.com/mist64/xhyve.git') || fail('Could not clone xhyve')
     end
     Dir.chdir('xhyve') do

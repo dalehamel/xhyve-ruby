@@ -6,3 +6,5 @@ install:
   - sudo bundle install
   - sudo bundle exec rake install
 script: sudo bundle exec rake
+env:
+  - TRAVIS=true

@@ -15,7 +15,7 @@ FIXTURE_PATH = File.expand_path('../../spec/fixtures', __FILE__)
 #      end
 #    ]
 #  end
-#end
+# end
 
 def ping(ip)
   attempts = 0
@@ -23,7 +23,7 @@ def ping(ip)
   sleep_time = 1
 
   while attempts < max_attempts
-    attempts = attempts +1
+    attempts += 1
     sleep(sleep_time)
     begin
       return true if Net::Ping::ICMP.new(ip).ping
@@ -34,7 +34,7 @@ end
 
 def on_guest(ip, command)
   output = ''
-  Net::SSH.start(ip, 'console', password: 'tcuser' ) do |ssh|
+  Net::SSH.start(ip, 'console', password: 'tcuser') do |ssh|
     output = ssh.exec!(command)
   end
   output.strip
