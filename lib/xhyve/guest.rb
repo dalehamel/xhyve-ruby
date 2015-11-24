@@ -6,6 +6,9 @@ require 'xhyve/dhcp'
 module Xhyve
   BINARY_PATH = File.expand_path('../../../lib/xhyve/vendor/xhyve', __FILE__).freeze
 
+  # An object to represent a guest that we can start and stop
+  # Effectively, it's a command wrapper around xhyve to provide an
+  # object oriented interface to a hypervisor guest
   class Guest
     PCI_BASE = 3
 

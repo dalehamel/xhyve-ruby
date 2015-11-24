@@ -1,4 +1,5 @@
 module Xhyve
+  # Parse DHCP leases file for a MAC address, and get its ip.
   module DHCP
     LEASES_FILE = '/var/db/dhcpd_leases'
     WAIT_TIME = 1
@@ -6,7 +7,7 @@ module Xhyve
 
     def self.get_ip_for_mac(mac)
       attempts = 0
-      max_attempts = ENV.has_key?('MAX_IP_WAIT') ? ENV['MAX_IP_WAIT'].to_i : MAX_ATTEMPTS
+      max_attempts = ENV.key?('MAX_IP_WAIT') ? ENV['MAX_IP_WAIT'].to_i : MAX_ATTEMPTS
       while attempts < max_attempts
         attempts += 1
         ip = parse_lease_file_for_mac(mac)

@@ -1,7 +1,7 @@
 require File.expand_path('../../spec_helper.rb', __FILE__)
 
 RSpec.describe Xhyve::DHCP do
-  let(:leases){
+  let(:leases) do
     {
       '9a:65:1b:12:cf:32' => '192.168.64.34',
       'a6:84:b2:34:cf:32' => '192.168.64.5',
@@ -9,7 +9,7 @@ RSpec.describe Xhyve::DHCP do
       'e2:ff:e:70:cf:32' => '192.168.64.3',
       '5a:90:52:13:cf:32' => '192.168.64.2'
     }
-  }
+  end
 
   before :all do
     ENV['LEASES_FILE'] = File.join(FIXTURE_PATH, 'dhcpd_leases.txt')
