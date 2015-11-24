@@ -1,7 +1,5 @@
 require File.expand_path('../../spec_helper.rb', __FILE__)
 
-return if ENV['TRAVIS']
-
 RSpec.describe Xhyve::Guest do
   let(:kernel) { File.join(FIXTURE_PATH, 'guest', 'vmlinuz') }
   let(:initrd) { File.join(FIXTURE_PATH, 'guest', 'initrd') }
@@ -46,4 +44,4 @@ RSpec.describe Xhyve::Guest do
     end
   end
 
-end
+end unless ENV['TRAVIS']

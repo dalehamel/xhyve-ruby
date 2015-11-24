@@ -1,7 +1,5 @@
 require File.expand_path('../../spec_helper.rb', __FILE__)
 
-return if ENV['TRAVIS']
-
 RSpec.describe Xhyve::DHCP do
   let(:leasefile){ File.join(FIXTURE_PATH, 'dhcpd_leases.txt') }
   let(:leases){ { 
@@ -14,7 +12,7 @@ RSpec.describe Xhyve::DHCP do
               }
 
   it 'parses the leases file to get an IP from a MAC' do
-    ENV['LEASE_FILE'] = leasefile
+    ENV['LEASES_FILE'] = leasefile
     leases.each do |mac, ip|
       expect(Xhyve::DHCP.get_ip_for_mac(mac)).to_not be_nil
       expect(Xhyve::DHCP.get_ip_for_mac(mac)).to eq(ip)
@@ -23,7 +21,7 @@ RSpec.describe Xhyve::DHCP do
   end
 
   it 'returns nil if no lease is found' do
-    ENV['LEASE_FILE'] = leasefile
+    ENV['LEASES_FILE'] = leasefile
     expect(Xhyve::DHCP.get_ip_for_mac('fakemac')).to be_nil
     ENV.delete('LEASE_FILE')
   end
