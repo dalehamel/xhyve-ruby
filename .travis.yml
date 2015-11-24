@@ -5,4 +5,4 @@ rvm:
 install:
   - bundle install
   - bundle exec rake install
-script: bundle exec rake
+script: sudo bundle exec rake
