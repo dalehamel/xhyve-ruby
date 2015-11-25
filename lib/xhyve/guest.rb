@@ -30,7 +30,7 @@ module Xhyve
     end
 
     def start
-      @r, @w, @pid = PTY.getpty(@command.join(' '))
+      @r, @w, @pid = PTY.getpty(@command)
     end
 
     def stop
@@ -38,7 +38,7 @@ module Xhyve
     end
 
     def running?
-      PTY.check(@pid).nil?
+      @pid && PTY.check(@pid).nil?
     end
 
     def ip
@@ -61,7 +61,7 @@ module Xhyve
         '-s', "#{PCI_BASE - 1}:0,virtio-net",
         "#{"#{@blockdevs.each_with_index.map { |p, i| "-s #{PCI_BASE + i},virtio-blk,#{p}" }.join(' ')}" unless @blockdevs.empty? }",
         '-f' "kexec,#{@kernel},#{@initrd},'#{@cmdline}'"
-      ].compact
+      ].join(' ')
     end
   end
 end

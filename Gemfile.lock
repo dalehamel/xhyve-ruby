@@ -2,16 +2,12 @@ PATH
   remote: .
   specs:
     xhyve-ruby (0.0.3)
-      childprocess (= 0.5.8)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    childprocess (0.5.8)
-      ffi (~> 1.0, >= 1.0.11)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    ffi (1.9.10)
     json (1.8.3)
     net-ping (1.7.8)
     net-ssh (3.0.1)

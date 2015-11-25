@@ -20,6 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'net-ping', ['=1.7.8']
   s.add_development_dependency 'rake', ['=10.4.2']
   s.add_development_dependency 'rake-compiler', ['=0.9.5']
-  s.add_dependency 'childprocess', ['=0.5.8']
   s.extensions = %w(ext/vmnet/extconf.rb)
 end
