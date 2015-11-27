@@ -1,5 +1,5 @@
 require 'securerandom'
-require 'pty'
+require 'io/console'
 
 require 'xhyve/dhcp'
 
@@ -11,6 +11,7 @@ module Xhyve
   # object oriented interface to a hypervisor guest
   class Guest
     PCI_BASE = 3
+    NULLDEV = '/dev/null'
 
     attr_reader :pid, :uuid, :mac
 
@@ -24,13 +25,21 @@ module Xhyve
       @uuid = opts[:uuid] || SecureRandom.uuid
       @serial = opts[:serial] || 'com1'
       @acpi = opts[:acpi] || true
-      @sudo = opts[:sudo] || true
+      @networking = opts[:networking] || true
+      @foreground = opts[:foreground] || false
       @command = build_command
       @mac = VMNet.uuid_to_mac(@uuid)
     end
 
     def start
-      @r, @w, @pid = PTY.getpty(@command)
+      outfile, infile = redirection
+      @pid = spawn(@command, [:out, :err] => outfile, in: infile)
+      if @foreground
+        Process.wait(@pid) 
+        outfile.cooked!
+        infile.cooked!
+      end
+      @pid
     end
 
     def stop
@@ -38,7 +47,7 @@ module Xhyve
     end
 
     def running?
-      @pid && PTY.check(@pid).nil?
+      (Process.kill(0, @pid) rescue false)
     end
 
     def ip
@@ -47,19 +56,28 @@ module Xhyve
 
     private
 
+    def redirection
+      if @foreground
+        [$stdout.raw!, $stdin.raw! ]
+      else
+        [NULLDEV, NULLDEV]
+      end
+    end
+
+
     def build_command
       [
-        "#{'sudo' if @sudo}",
+        "#{'sudo' if @networking}",
         "#{BINARY_PATH}",
         "#{'-A' if @acpi}",
         '-U', @uuid,
         '-m', @memory,
         '-c', @processors,
         '-s', '0:0,hostbridge',
+        "#{"-s #{PCI_BASE - 1}:0,virtio-net" if @networking }" ,
+        "#{"#{@blockdevs.each_with_index.map { |p, i| "-s #{PCI_BASE + i},virtio-blk,#{p}" }.join(' ')}" unless @blockdevs.empty? }",
         '-s', '31,lpc',
         '-l', "#{@serial},stdio",
-        '-s', "#{PCI_BASE - 1}:0,virtio-net",
-        "#{"#{@blockdevs.each_with_index.map { |p, i| "-s #{PCI_BASE + i},virtio-blk,#{p}" }.join(' ')}" unless @blockdevs.empty? }",
         '-f' "kexec,#{@kernel},#{@initrd},'#{@cmdline}'"
       ].join(' ')
     end

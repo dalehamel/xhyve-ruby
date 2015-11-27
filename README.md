@@ -17,11 +17,11 @@ guest = Xhyve::Guest.new(
     cmdline: 'console=tty0',   # boot flags to linux
     blockdevs: 'loop.img',     # path to img files to use as block devs
     uuid: 'a-valid-uuid',      # a valid UUID
-    serial: 'com2'             # com1 / com2 (maps to ttyS0, ttyS1, etc)
-    memory: '200M'             # amount of memory in M/G
-    processors: 1              # number of processors
-    sudo: true                 # use sudo? (required for network unless signed)
-    acpi: true                 # set up acpi? (required for clean shutdown)
+    serial: 'com2',            # com1 / com2 (maps to ttyS0, ttyS1, etc)
+    memory: '200M',            # amount of memory in M/G
+    processors: 1,             # number of processors
+    networking: true,          # Enable networking? (requires sudo)
+    acpi: true,                 # set up acpi? (required for clean shutdown)
     )
 
 pid = guest.start              # starting the guest spawns an xhyve subprocess, returning the pid
