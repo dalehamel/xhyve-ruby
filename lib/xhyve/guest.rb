@@ -70,7 +70,6 @@ module Xhyve
 
     def build_command
       [
-        "#{'sudo' if @networking}",
         "#{BINARY_PATH}",
         "#{'-A' if @acpi}",
         '-U', @uuid,
