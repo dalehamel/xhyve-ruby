@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.description = 'Provides a means of interacting with xhyve from ruby'
   s.authors     = ['Dale Hamel']
   s.email       = 'dale.hamel@srvthe.net'
-  s.files       = Dir['lib/**/*', 'ext/**/*']
+  s.files       = Dir['lib/**/*']
   s.homepage    =
     'http://rubygems.org/gems/ruby-xhyve'
   s.license       = 'MIT'
@@ -20,5 +20,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'net-ping', ['=1.7.8']
   s.add_development_dependency 'rake', ['=10.4.2']
   s.add_development_dependency 'rake-compiler', ['=0.9.5']
-  s.extensions = %w(ext/vmnet/extconf.rb)
 end

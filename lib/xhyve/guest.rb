@@ -28,7 +28,7 @@ module Xhyve
       @networking = opts[:networking] || true
       @foreground = opts[:foreground] || false
       @command = build_command
-      @mac = VMNet.uuid_to_mac(@uuid)
+      @mac = find_mac
     end
 
     def start
@@ -47,7 +47,7 @@ module Xhyve
     end
 
     def running?
-      (Process.kill(0, @pid) rescue false)
+      (true if Process.kill(0, @pid) rescue false)
     end
 
     def ip
@@ -64,6 +64,9 @@ module Xhyve
       end
     end
 
+    def find_mac
+      `#{@command} -M`.gsub(/MAC:\s+/,'')
+    end
 
     def build_command
       [
