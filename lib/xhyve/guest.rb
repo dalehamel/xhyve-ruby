@@ -65,7 +65,7 @@ module Xhyve
     end
 
     def find_mac
-      `#{@command} -M`.gsub(/MAC:\s+/,'')
+      `#{@command} -M`.strip.gsub(/MAC:\s+/,'')
     end
 
     def build_command
