@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email       = 'dale.hamel@srvthe.net'
   s.files       = Dir['lib/**/*']
   s.homepage    =
-    'http://rubygems.org/gems/ruby-xhyve'
+    'https://github.com/dalehamel/xhyve-ruby'
   s.license       = 'MIT'
   s.add_development_dependency 'simplecov', ['=0.10.0']
   s.add_development_dependency 'rspec', ['=3.2.0']
