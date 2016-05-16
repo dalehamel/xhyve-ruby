@@ -24,8 +24,8 @@ module Xhyve
       @processors = opts[:processors] || '1'
       @uuid = opts[:uuid] || SecureRandom.uuid
       @serial = opts[:serial] || 'com1'
-      @acpi = opts[:acpi] || true
-      @networking = opts[:networking] || true
+      @acpi = opts.fetch(:acpi, true)
+      @networking = opts.fetch(:networking, true)
       @foreground = opts[:foreground] || false
       @command = build_command
       @mac = find_mac
