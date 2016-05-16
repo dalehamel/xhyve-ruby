@@ -27,6 +27,7 @@ module Xhyve
       @acpi = opts.fetch(:acpi, true)
       @networking = opts.fetch(:networking, true)
       @foreground = opts[:foreground] || false
+      @binary = opts[:binary] || BINARY_PATH
       @command = build_command
       @mac = find_mac
     end
@@ -70,7 +71,7 @@ module Xhyve
 
     def build_command
       [
-        "#{BINARY_PATH}",
+        "#{@binary}",
         "#{'-A' if @acpi}",
         '-U', @uuid,
         '-m', @memory,
